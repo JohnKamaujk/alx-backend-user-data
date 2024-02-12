@@ -6,6 +6,8 @@
 import base64
 import binascii
 import re
+from typing import Tuple
+
 from .auth import Auth
 
 
@@ -40,3 +42,20 @@ class BasicAuth(Auth):
                 return res.decode('utf-8')
             except (binascii.Error, UnicodeDecodeError):
                 return None
+
+    def extract_user_credentials(
+            self,
+            decoded_base64_authorization_header: str,
+            ) -> Tuple[str, str]:
+        """Extracts user credentials from a base64-decoded authorization
+        header that uses the Basic authentication flow.
+        """
+        if type(decoded_base64_authorization_header) == str:
+            match = re.fullmatch(
+                r'([^:]+):(.+)',
+                decoded_base64_authorization_header.strip(),
+            )
+            if match is not None:
+                user, password = match.groups()
+                return user, password
+        return None, None
