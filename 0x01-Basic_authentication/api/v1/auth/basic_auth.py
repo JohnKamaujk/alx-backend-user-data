@@ -60,7 +60,7 @@ class BasicAuth(Auth):
                 user, password = match.groups()
                 return user, password
         return None, None
-    
+
     def user_object_from_credentials(
             self,
             user_email: str,
