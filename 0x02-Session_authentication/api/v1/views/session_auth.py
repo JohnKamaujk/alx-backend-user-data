@@ -45,6 +45,7 @@ def logout() -> Tuple[str, int]:
       - An empty JSON object.
     """
     from api.v1.app import auth
-    if not auth.destroy_session(request):
+    is_destroyed = auth.destroy_session(request)
+    if not is_destroyed:
         abort(404)
     return jsonify({})
