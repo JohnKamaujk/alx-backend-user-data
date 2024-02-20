@@ -22,12 +22,11 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-    def register_user(self, email, password) -> User:
+    def register_user(self, email: str, password: str) -> User:
         """Adds a new user to the database.
         """
         try:
             self._db.find_user_by(email=email)
         except NoResultFound:
-            hashed_password = _hash_password(password)
-            return self._db.add_user(email, hashed_password)
+            return self._db.add_user(email, _hash_password(password))
         raise ValueError("User {} already exists".format(email))
